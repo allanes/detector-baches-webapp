@@ -1,0 +1,6 @@
+.venv
+.vscode
+__pycache__
+uploads
+static/output
+traced_model.pt
