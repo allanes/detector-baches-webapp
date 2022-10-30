@@ -61,6 +61,9 @@ def recuperar_metadatos_modelos(ruta_base) -> list[ModelMetadata]:
                 image_size=image_size
             )
         )
+        
+        print(f'Se encontraron {len(lista_modelos)} modelos:\n')
+        [print(f'    Modelo {idx}: {modelo.nombre}') for idx, modelo in enumerate(lista_modelos)]
     
     return lista_modelos
 
@@ -71,6 +74,7 @@ def run(ruta_archivo_entrada):
     RUTA_BASE_YOLOS = os.getenv('RUTA_BASE_YOLOS')
     modelos = recuperar_metadatos_modelos(ruta_base = RUTA_BASE_MODELOS)
     modelo = modelos[0]
+    print(f'Usando modelo {modelo.nombre}')
     
     CONFIANZA = 0.2
     IOU = 0.25
