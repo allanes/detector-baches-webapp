@@ -1,9 +1,11 @@
 import os
+import urllib.parse
 import uvicorn
 from fastapi import FastAPI, Request, UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 import predict
 from dotenv import load_dotenv
 load_dotenv('rutas_cfg.env')
@@ -11,6 +13,7 @@ PORT = os.getenv('PORT', 5000)
 print(f'Puerto configurado: {PORT}')
 
 app = FastAPI()
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory='templates')
 
@@ -35,9 +38,11 @@ async def upload_file(file: UploadFile):
     ruta_archivo_salida = os.path.abspath(ruta_archivo_salida)
     print('Salida: ' + ruta_archivo_salida)
     
-    return FileResponse(ruta_archivo_salida)
-
-
+    return FileResponse(
+        path=ruta_archivo_salida, 
+        filename=os.path.split(ruta_archivo_salida)[1], 
+        media_type='*/*'
+    )
     
 
 if __name__ == '__main__':
